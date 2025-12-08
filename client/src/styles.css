@@ -1,0 +1,152 @@
+/* Basic resets */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    color: #111;
+    background: #f7f7f9;
+}
+
+/* Layout */
+.page-container {
+    max-width: 1100px;
+    margin: 24px auto;
+    padding: 16px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+h1 {
+    margin-top: 0;
+}
+
+/* Login */
+.login-container {
+    max-width: 420px;
+    margin: 60px auto;
+    padding: 24px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    text-align: center;
+}
+
+.login-form input {
+    width: 100%;
+    padding: 10px 12px;
+    margin: 8px 0;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+
+.login-form button {
+    padding: 10px 16px;
+    margin-top: 8px;
+    cursor: pointer;
+}
+
+/* Dashboard cards */
+.dashboard-cards {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+.card {
+    flex: 1 1 220px;
+    padding: 16px;
+    border-radius: 8px;
+    border: 1px solid #eee;
+    background: #fafafa;
+    cursor: pointer;
+    transition: transform .12s;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+}
+
+.card.low {
+    border-color: #ffd7d7;
+    background: #fff4f4;
+}
+
+/* Buttons & forms */
+.btn-primary {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+button {
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    background: white;
+}
+
+.item-form input,
+.item-form select {
+    width: 100%;
+    padding: 8px;
+    margin: 6px 0;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+
+/* Tables */
+.inventory-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+}
+
+.inventory-table th,
+.inventory-table td {
+    padding: 10px 8px;
+    border: 1px solid #eee;
+    text-align: left;
+}
+
+.low-stock {
+    background: #fff1f0;
+}
+
+/* Small helpers */
+.filters {
+    display: flex;
+    gap: 8px;
+    margin: 12px 0;
+    flex-wrap: wrap;
+}
+
+.filters input {
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+}
+
+.error {
+    color: #b91c1c;
+    margin-top: 8px;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+    .dashboard-cards {
+        flex-direction: column;
+    }
+
+    .filters {
+        flex-direction: column;
+    }
+}
