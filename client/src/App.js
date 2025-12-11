@@ -12,17 +12,20 @@ import UserManagement from './pages/UserManagement';
 
 import PrivateRoute from './components/PrivateRoute';
 
+import LandingPage from './components/LandingPage';
+
 function App() {
   return (
     <Router>
       <Routes>
 
-        {/* Public Route */}
+        {/* Public Routes */}
+        <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
 
         {/* Protected Routes */}
         <Route element={<PrivateRoute />}>
-          <Route path="/" element={<Dashboard />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/inventory" element={<InventoryList />} />
           <Route path="/inventory/new" element={<ItemForm />} />
           <Route path="/inventory/edit/:id" element={<ItemForm />} />
@@ -32,7 +35,7 @@ function App() {
         </Route>
 
         {/* Admin-only Routes */}
-        <Route element={<PrivateRoute roles={['admin']}/>}>
+        <Route element={<PrivateRoute roles={['admin']} />}>
           <Route path="/users" element={<UserManagement />} />
         </Route>
 
