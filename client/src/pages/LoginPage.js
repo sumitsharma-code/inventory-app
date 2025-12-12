@@ -16,7 +16,7 @@ const LoginPage = () => {
 
     try {
       await login(username, password);
-      navigate('/');
+      navigate('/dashboard');
     } catch (err) {
       setError('Invalid username or password');
     }
@@ -27,7 +27,7 @@ const LoginPage = () => {
       <h1>Inventory Login</h1>
 
       <form onSubmit={handleSubmit} className="login-form">
-        
+
         <input
           type="text"
           placeholder="Username"
