@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
+import MainLayout from './MainLayout';
 
 const PrivateRoute = ({ roles }) => {
   const { user } = useContext(AuthContext);
@@ -14,7 +15,11 @@ const PrivateRoute = ({ roles }) => {
     return <div style={{ padding: 20 }}>Forbidden — you don't have permission to view this page.</div>;
   }
 
-  return <Outlet />;
+  return (
+    <MainLayout>
+      <Outlet />
+    </MainLayout>
+  );
 };
 
 export default PrivateRoute;

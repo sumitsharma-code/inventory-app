@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import api from '../api/api';
 
+import { FiBox, FiTag, FiDollarSign, FiLayers, FiAlertCircle, FiSave, FiX } from 'react-icons/fi';
+
 export default function ItemForm() {
-  const { id } = useParams(); // edit mode if id exists
+  const { id } = useParams();
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -23,8 +25,8 @@ export default function ItemForm() {
   useEffect(() => {
     if (!id) return;
     setLoading(true);
-    api
-      .get(`/items/${id}`)
+    // ... fetch logic remains the same ...
+    api.get(`/items/${id}`)
       .then((res) => {
         const data = res.data;
         setForm({
@@ -37,9 +39,7 @@ export default function ItemForm() {
           threshold: data.threshold || 5,
         });
       })
-      .catch((err) =>
-        setError(err.response?.data?.message || 'Failed to load item')
-      )
+      .catch((err) => setError(err.response?.data?.message || 'Failed to load item'))
       .finally(() => setLoading(false));
   }, [id]);
 
@@ -51,16 +51,9 @@ export default function ItemForm() {
     if (!form.itemId.trim()) return 'SKU (itemId) is required';
     if (!form.name.trim()) return 'Name is required';
     if (!form.category.trim()) return 'Category is required';
-    if (
-      form.price === '' ||
-      isNaN(Number(form.price)) ||
-      Number(form.price) < 0
-    )
-      return 'Valid price is required';
-    if (isNaN(Number(form.quantity)) || Number(form.quantity) < 0)
-      return 'Quantity must be >= 0';
-    if (isNaN(Number(form.threshold)) || Number(form.threshold) < 0)
-      return 'Threshold must be >= 0';
+    if (form.price === '' || isNaN(Number(form.price)) || Number(form.price) < 0) return 'Valid price is required';
+    if (isNaN(Number(form.quantity)) || Number(form.quantity) < 0) return 'Quantity must be >= 0';
+    if (isNaN(Number(form.threshold)) || Number(form.threshold) < 0) return 'Threshold must be >= 0';
     return null;
   };
 
@@ -68,116 +61,155 @@ export default function ItemForm() {
     e.preventDefault();
     setError('');
     const v = validate();
-    if (v) {
-      setError(v);
-      return;
-    }
+    if (v) { setError(v); return; }
 
     try {
       if (id) {
-        // Edit (Admin only at backend)
-        await api.put(`/items/${id}`, {
-          name: form.name,
-          category: form.category,
-          brand: form.brand,
-          price: Number(form.price),
-          quantity: Number(form.quantity),
-          threshold: Number(form.threshold),
-        });
-        alert('Item updated');
+        await api.put(`/items/${id}`, { ...form, price: Number(form.price), quantity: Number(form.quantity), threshold: Number(form.threshold) });
+        // Removed alert for smoother UX
       } else {
-        // Create (creator or admin)
-        await api.post('/items', {
-          itemId: form.itemId,
-          name: form.name,
-          category: form.category,
-          brand: form.brand,
-          price: Number(form.price),
-          quantity: Number(form.quantity),
-          threshold: Number(form.threshold),
-        });
-        alert('Item created');
+        await api.post('/items', { ...form, price: Number(form.price), quantity: Number(form.quantity), threshold: Number(form.threshold) });
       }
       navigate('/inventory');
     } catch (err) {
-      const msg = err.response?.data?.message || 'Operation failed';
-      setError(msg);
+      setError(err.response?.data?.message || 'Operation failed');
     }
   };
 
   return (
-    <div className="page-container">
-      <h1>{id ? 'Edit Item' : 'Add New Item'}</h1>
+    <div>
+      <div className="page-header">
+        <h1>{id ? 'Edit Item' : 'New Item'}</h1>
+        <p>{id ? 'Update inventory details.' : 'Add a new product to your inventory.'}</p>
+      </div>
 
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        <form className="item-form" onSubmit={handleSubmit}>
-          <label>SKU (itemId)</label>
-          <input
-            value={form.itemId}
-            onChange={handleChange('itemId')}
-            disabled={!!id} // don't allow changing SKU on edit
-            placeholder="e.g., TV-001"
-          />
+      <div className="glass-card" style={{ maxWidth: '800px', margin: '0 auto' }}>
+        {loading ? (
+          <p style={{ color: 'white', textAlign: 'center' }}>Loading...</p>
+        ) : (
+          <form onSubmit={handleSubmit} style={{ display: 'grid', gap: '1.5rem' }}>
 
-          <label>Name</label>
-          <input
-            value={form.name}
-            onChange={handleChange('name')}
-            placeholder="Item name"
-          />
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+              <div className="form-group">
+                <label>SKU (ID)</label>
+                <div className="input-wrapper">
+                  <FiTag className="input-icon" />
+                  <input
+                    className="form-input"
+                    value={form.itemId}
+                    onChange={handleChange('itemId')}
+                    disabled={!!id}
+                    placeholder="e.g., TV-001"
+                  />
+                </div>
+              </div>
 
-          <label>Category</label>
-          <input
-            value={form.category}
-            onChange={handleChange('category')}
-            placeholder="TV, Fridge, AC..."
-          />
+              <div className="form-group">
+                <label>Name</label>
+                <div className="input-wrapper">
+                  <FiBox className="input-icon" />
+                  <input
+                    className="form-input"
+                    value={form.name}
+                    onChange={handleChange('name')}
+                    placeholder="Item name"
+                  />
+                </div>
+              </div>
+            </div>
 
-          <label>Brand</label>
-          <input
-            value={form.brand}
-            onChange={handleChange('brand')}
-            placeholder="Brand name"
-          />
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+              <div className="form-group">
+                <label>Category</label>
+                <div className="input-wrapper">
+                  <FiLayers className="input-icon" />
+                  <input
+                    className="form-input"
+                    value={form.category}
+                    onChange={handleChange('category')}
+                    placeholder="Category"
+                  />
+                </div>
+              </div>
 
-          <label>Price</label>
-          <input
-            type="number"
-            value={form.price}
-            onChange={handleChange('price')}
-            placeholder="Price in ₹"
-          />
+              <div className="form-group">
+                <label>Brand</label>
+                <div className="input-wrapper">
+                  <FiTag className="input-icon" />
+                  <input
+                    className="form-input"
+                    value={form.brand}
+                    onChange={handleChange('brand')}
+                    placeholder="Brand name"
+                  />
+                </div>
+              </div>
+            </div>
 
-          <label>Quantity</label>
-          <input
-            type="number"
-            value={form.quantity}
-            onChange={handleChange('quantity')}
-          />
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1.5rem' }}>
+              <div className="form-group">
+                <label>Price (₹)</label>
+                <div className="input-wrapper">
+                  <FiDollarSign className="input-icon" />
+                  <input
+                    type="number"
+                    className="form-input"
+                    value={form.price}
+                    onChange={handleChange('price')}
+                    placeholder="0.00"
+                  />
+                </div>
+              </div>
 
-          <label>Threshold</label>
-          <input
-            type="number"
-            value={form.threshold}
-            onChange={handleChange('threshold')}
-          />
+              <div className="form-group">
+                <label>Quantity</label>
+                <div className="input-wrapper">
+                  <FiLayers className="input-icon" />
+                  <input
+                    type="number"
+                    className="form-input"
+                    value={form.quantity}
+                    onChange={handleChange('quantity')}
+                  />
+                </div>
+              </div>
 
-          {error && <p className="error">{error}</p>}
+              <div className="form-group">
+                <label>Low Stock Alert</label>
+                <div className="input-wrapper">
+                  <FiAlertCircle className="input-icon" />
+                  <input
+                    type="number"
+                    className="form-input"
+                    value={form.threshold}
+                    onChange={handleChange('threshold')}
+                  />
+                </div>
+              </div>
+            </div>
 
-          <div style={{ marginTop: 12 }}>
-            <button type="submit">{id ? 'Update Item' : 'Create Item'}</button>
-            <button
-              type="button"
-              onClick={() => navigate('/inventory')}
-              style={{ marginLeft: 8 }}
-            >
-              Cancel
-            </button>
-          </div>
-        </form>
-      )}
+            {error && <div className="error-message">{error}</div>}
+
+            <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem', justifyContent: 'flex-end' }}>
+              <button
+                type="button"
+                className="btn-secondary"
+                onClick={() => navigate('/inventory')}
+                style={{ width: 'auto' }}
+              >
+                <FiX style={{ marginRight: '0.5rem' }} /> Cancel
+              </button>
+              <button
+                type="submit"
+                className="btn-primary"
+                style={{ width: 'auto', padding: '0.75rem 2rem' }}
+              >
+                <FiSave style={{ marginRight: '0.5rem' }} /> Save Item
+              </button>
+            </div>
+          </form>
+        )}
+      </div>
     </div>
   );
 }

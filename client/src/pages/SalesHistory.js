@@ -22,44 +22,49 @@ export default function SalesHistory() {
   }, []);
 
   return (
-    <div className="page-container">
-      <h1>Sales History</h1>
+    <div>
+      <div className="page-header">
+        <h1>Sales History</h1>
+        <p>Track past transactions and revenue.</p>
+      </div>
 
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        <table className="inventory-table">
-          <thead>
-            <tr>
-              <th>Item</th>
-              <th>SKU</th>
-              <th>Quantity</th>
-              <th>Price at Sale</th>
-              <th>Date</th>
-              <th>Sold By</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {sales.length === 0 && (
+      <div className="glass-card" style={{ padding: 0, overflow: 'hidden' }}>
+        {loading ? (
+          <p style={{ padding: '2rem', textAlign: 'center', color: '#9CA3AF' }}>Loading...</p>
+        ) : (
+          <table className="inventory-table">
+            <thead>
               <tr>
-                <td colSpan="6">No sales recorded yet.</td>
+                <th>Item</th>
+                <th>SKU</th>
+                <th>Qty</th>
+                <th>Price</th>
+                <th>Date</th>
+                <th>Sold By</th>
               </tr>
-            )}
+            </thead>
 
-            {sales.map((s) => (
-              <tr key={s._id}>
-                <td>{s.item?.name || "—"}</td>
-                <td>{s.item?.itemId || "—"}</td>
-                <td>{s.quantity}</td>
-                <td>₹{s.priceAtSale}</td>
-                <td>{new Date(s.date).toLocaleString()}</td>
-                <td>{s.soldBy?.displayName || s.soldBy?.username || "—"}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+            <tbody>
+              {sales.length === 0 && (
+                <tr>
+                  <td colSpan="6" style={{ padding: '2rem', textAlign: 'center', color: '#9CA3AF' }}>No sales recorded yet.</td>
+                </tr>
+              )}
+
+              {sales.map((s) => (
+                <tr key={s._id}>
+                  <td style={{ fontWeight: '500', color: 'white' }}>{s.item?.name || "—"}</td>
+                  <td>{s.item?.itemId || "—"}</td>
+                  <td>{s.quantity}</td>
+                  <td style={{ color: '#10B981' }}>₹{s.priceAtSale}</td>
+                  <td style={{ color: '#9CA3AF' }}>{new Date(s.date).toLocaleString()}</td>
+                  <td>{s.soldBy?.displayName || s.soldBy?.username || "—"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
     </div>
   );
 }
