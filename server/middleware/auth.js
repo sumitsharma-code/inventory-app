@@ -13,7 +13,7 @@ const authMiddleware = async (req, res, next) => {
   try {
     const payload = jwt.verify(token, process.env.JWT_SECRET);
 
-    const user = await User.findById(payload.id).select('-passwordHash');
+    const user = await User.findById(payload.id).select("-password");
     if (!user) {
       return res.status(401).json({ message: 'Invalid token - user not found' });
     }
