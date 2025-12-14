@@ -36,10 +36,9 @@ app.use('/users', userRoutes);
 
 const PORT = process.env.PORT || 5000;
 
-connectDB(process.env.MONGO_URI)
-  .then(() => {
-    server.listen(PORT, () => console.log(`Server listening on ${PORT}`));
-  })
-  .catch(err => {
-    console.error('DB connection failed', err);
-  });
+connectDB();
+
+server.listen(PORT, () => {
+  console.log(`Server listening on ${PORT}`);
+});
+
