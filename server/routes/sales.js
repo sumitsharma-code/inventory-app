@@ -4,7 +4,7 @@ const saleController = require('../controllers/saleController');
 const auth = require('../middleware/auth');
 const permit = require('../middleware/roles');
 
-router.post('/', auth, permit(['admin','creator']), saleController.recordSale);
-router.get('/', auth, permit(['admin','creator']), saleController.getSales);
+router.post('/', auth, permit(['admin','staff']), saleController.recordSale);
+router.get('/', auth, permit(['admin','staff']), saleController.getSales);
 
 module.exports = router;

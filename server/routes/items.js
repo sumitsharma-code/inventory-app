@@ -7,7 +7,7 @@ const permit = require('../middleware/roles');
 router.get('/', auth, itemController.getItems);
 router.get('/:id', auth, itemController.getItem);
 
-router.post('/', auth, permit(['admin', 'creator']), itemController.createItem);
+router.post('/', auth, permit(['admin', 'staff']), itemController.createItem);
 router.put('/:id', auth, permit('admin'), itemController.updateItem);
 router.delete('/:id', auth, permit('admin'), itemController.deleteItem);
 
