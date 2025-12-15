@@ -14,19 +14,37 @@ const app = express();
 const server = http.createServer(app);
 const { Server } = require('socket.io');
 
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://inventory-app-zfjs.onrender.com"
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true
+}));
+
+app.use(express.json());
+
 const io = new Server(server, {
-  cors: { origin: process.env.CLIENT_URL || '*' }
+  cors: {
+    origin: allowedOrigins,
+    credentials: true
+  }
 });
 
 app.set('io', io);
 
 io.on('connection', socket => {
   console.log('Socket connected', socket.id);
-  socket.on('disconnect', () => console.log('Socket disconnected', socket.id));
 });
-
-app.use(cors({ origin: process.env.CLIENT_URL || '*' }));
-app.use(express.json());
 
 app.use('/auth', authRoutes);
 app.use('/items', itemRoutes);
@@ -41,4 +59,3 @@ connectDB();
 server.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });
-
