@@ -16,27 +16,24 @@ const { Server } = require('socket.io');
 
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://inventory-app-frontend.onrender.com"
+  process.env.CLIENT_URL
 ];
-
-app.use((req, res, next) => {
-  console.log("Request Origin:", req.headers.origin);
-  next();
-});
 
 app.use(cors({
   origin: function (origin, callback) {
+    // allow Postman, curl, server-to-server
     if (!origin) return callback(null, true);
 
     if (allowedOrigins.includes(origin)) {
       return callback(null, true);
     }
 
-    console.error("Blocked by CORS:", origin);
-    callback(new Error("Not allowed by CORS"));
+    console.log("CORS blocked:", origin);
+    return callback(null, false); // ❗ IMPORTANT: false, NOT error
   },
   credentials: true
 }));
+
 
 
 app.use(express.json());
