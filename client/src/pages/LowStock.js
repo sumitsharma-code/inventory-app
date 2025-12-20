@@ -28,7 +28,7 @@ export default function LowStock() {
 
       <div className="glass-card" style={{ padding: 0, overflow: 'hidden' }}>
         <div style={{ overflowX: 'auto' }}>
-          <table className="inventory-table">
+          <table className="inventory-table" style={{ minWidth: '500px' }}>
             <thead>
               <tr>
                 <th>Item ID</th>

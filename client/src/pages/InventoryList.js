@@ -78,7 +78,7 @@ const InventoryList = () => {
 
       <div className="glass-card" style={{ padding: 0, overflow: 'hidden' }}>
         <div style={{ overflowX: 'auto' }}>
-          <table className="inventory-table">
+          <table className="inventory-table" style={{ minWidth: '800px' }}>
             <thead>
               <tr>
                 <th>SKU</th>

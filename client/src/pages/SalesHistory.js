@@ -33,7 +33,7 @@ export default function SalesHistory() {
           <p style={{ padding: '2rem', textAlign: 'center', color: '#9CA3AF' }}>Loading...</p>
         ) : (
           <div style={{ overflowX: 'auto' }}>
-            <table className="inventory-table">
+            <table className="inventory-table" style={{ minWidth: '600px' }}>
               <thead>
                 <tr>
                   <th>Item</th>
