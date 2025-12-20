@@ -141,41 +141,43 @@ export default function UserManagement() {
       <div className="glass-card" style={{ padding: 0, overflow: 'hidden' }}>
         <h3 style={{ padding: '1.5rem', margin: 0, color: 'white', background: 'rgba(255,255,255,0.02)' }}>Existing Users</h3>
         {loading ? <p style={{ padding: '2rem', textAlign: 'center' }}>Loading users...</p> : (
-          <table className="inventory-table">
-            <thead>
-              <tr><th>Username</th><th>Display Name</th><th>Role</th><th style={{ textAlign: 'right' }}>Actions</th></tr>
-            </thead>
-            <tbody>
-              {users.map(u => (
-                <tr key={u._id}>
-                  <td style={{ color: 'white', fontWeight: '500' }}>{u.username}</td>
-                  <td>{u.displayName || '—'}</td>
-                  <td>
-                    <span style={{
-                      padding: '0.25rem 0.75rem',
-                      borderRadius: '1rem',
-                      fontSize: '0.85rem',
-                      background: u.role === 'admin' ? 'rgba(139, 92, 246, 0.2)' : 'rgba(59, 130, 246, 0.2)',
-                      color: u.role === 'admin' ? '#C4B5FD' : '#93C5FD'
-                    }}>
-                      {u.role}
-                    </span>
-                  </td>
-                  <td style={{ textAlign: 'right' }}>
-                    <button
-                      onClick={() => handleDelete(u._id)}
-                      disabled={u._id === user.id}
-                      className="icon-btn-edit"
-                      style={{ color: '#EF4444' }}
-                      title="Delete User"
-                    >
-                      <FiTrash2 />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div style={{ overflowX: 'auto' }}>
+            <table className="inventory-table">
+              <thead>
+                <tr><th>Username</th><th>Display Name</th><th>Role</th><th style={{ textAlign: 'right' }}>Actions</th></tr>
+              </thead>
+              <tbody>
+                {users.map(u => (
+                  <tr key={u._id}>
+                    <td style={{ color: 'white', fontWeight: '500' }}>{u.username}</td>
+                    <td>{u.displayName || '—'}</td>
+                    <td>
+                      <span style={{
+                        padding: '0.25rem 0.75rem',
+                        borderRadius: '1rem',
+                        fontSize: '0.85rem',
+                        background: u.role === 'admin' ? 'rgba(139, 92, 246, 0.2)' : 'rgba(59, 130, 246, 0.2)',
+                        color: u.role === 'admin' ? '#C4B5FD' : '#93C5FD'
+                      }}>
+                        {u.role}
+                      </span>
+                    </td>
+                    <td style={{ textAlign: 'right' }}>
+                      <button
+                        onClick={() => handleDelete(u._id)}
+                        disabled={u._id === user.id}
+                        className="icon-btn-edit"
+                        style={{ color: '#EF4444' }}
+                        title="Delete User"
+                      >
+                        <FiTrash2 />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
     </div>
