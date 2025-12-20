@@ -12,23 +12,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [showForgotPassword, setShowForgotPassword] = useState(false);
-  const [resetEmail, setResetEmail] = useState('');
-  const [resetStatus, setResetStatus] = useState('');
 
-  const handleResetSubmit = (e) => {
-    e.preventDefault();
-    // Simulate API call
-    setResetStatus('sending');
-    setTimeout(() => {
-      setResetStatus('sent');
-      setTimeout(() => {
-        setShowForgotPassword(false);
-        setResetStatus('');
-        setResetEmail('');
-      }, 2000);
-    }, 1500);
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -85,13 +69,7 @@ const LoginPage = () => {
                 required
               />
             </div>
-            <button
-              type="button"
-              className="forgot-password-link"
-              onClick={() => setShowForgotPassword(true)}
-            >
-              Forgot Password?
-            </button>
+
           </div>
 
           <button type="submit" className="btn-primary" disabled={loading}>
@@ -106,51 +84,7 @@ const LoginPage = () => {
         </Link>
       </div>
 
-      {/* Forgot Password Modal */}
-      {showForgotPassword && (
-        <div className="modal-overlay" onClick={() => setShowForgotPassword(false)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-              <h2>Reset Password</h2>
-              <p>Enter your email logic to receive reset instructions.</p>
-            </div>
 
-            {resetStatus === 'sent' ? (
-              <div className="success-message">
-                Reset link sent! Check your inbox.
-              </div>
-            ) : (
-              <form onSubmit={handleResetSubmit}>
-                <div className="form-group">
-                  <label htmlFor="reset-email">Email Address</label>
-                  <div className="input-wrapper">
-                    <FiMail className="input-icon" />
-                    <input
-                      id="reset-email"
-                      type="email"
-                      className="form-input"
-                      placeholder="name@company.com"
-                      value={resetEmail}
-                      onChange={(e) => setResetEmail(e.target.value)}
-                      required
-                      autoFocus
-                    />
-                  </div>
-                </div>
-
-                <div className="modal-actions">
-                  <button type="button" className="btn-secondary" onClick={() => setShowForgotPassword(false)}>
-                    Cancel
-                  </button>
-                  <button type="submit" className="btn-primary" disabled={resetStatus === 'sending'}>
-                    {resetStatus === 'sending' ? 'Sending...' : 'Send Link'}
-                  </button>
-                </div>
-              </form>
-            )}
-          </div>
-        </div>
-      )}
     </div>
   );
 };
