@@ -16,20 +16,28 @@ const { Server } = require('socket.io');
 
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://inventory-app-zfjs.onrender.com"
+  "https://inventory-app-frontend.onrender.com"
 ];
+
+app.use((req, res, next) => {
+  console.log("Request Origin:", req.headers.origin);
+  next();
+});
 
 app.use(cors({
   origin: function (origin, callback) {
     if (!origin) return callback(null, true);
+
     if (allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
+      return callback(null, true);
     }
+
+    console.error("Blocked by CORS:", origin);
+    callback(new Error("Not allowed by CORS"));
   },
   credentials: true
 }));
+
 
 app.use(express.json());
 
