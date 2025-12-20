@@ -142,7 +142,7 @@ export default function UserManagement() {
         <h3 style={{ padding: '1.5rem', margin: 0, color: 'white', background: 'rgba(255,255,255,0.02)' }}>Existing Users</h3>
         {loading ? <p style={{ padding: '2rem', textAlign: 'center' }}>Loading users...</p> : (
           <div style={{ overflowX: 'auto' }}>
-            <table className="inventory-table">
+            <table className="inventory-table" style={{ minWidth: '600px' }}>
               <thead>
                 <tr><th>Username</th><th>Display Name</th><th>Role</th><th style={{ textAlign: 'right' }}>Actions</th></tr>
               </thead>
