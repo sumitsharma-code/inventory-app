@@ -296,3 +296,125 @@ body {
     font-size: 0.875rem;
     margin-top: 1rem;
 }
+
+/* ============================ */
+/* Responsive Styles */
+/* ============================ */
+
+@media (max-width: 768px) {
+    .layout-container {
+        flex-direction: column;
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: 5rem 1.5rem 2rem 1.5rem;
+        /* Top padding for header */
+        width: 100%;
+    }
+
+    /* Mobile Header */
+    .mobile-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 60px;
+        background: rgba(18, 20, 28, 0.95);
+        backdrop-filter: blur(10px);
+        display: flex;
+        align-items: center;
+        padding: 0 1rem;
+        z-index: 100;
+        border-bottom: 1px solid var(--glass-border);
+    }
+
+    .brand-mobile {
+        font-size: 1.25rem;
+        font-weight: 800;
+        margin-left: 1rem;
+        background: linear-gradient(to right, var(--primary-accent), var(--secondary-accent));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    .menu-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0.5rem;
+    }
+
+    .hamburger {
+        width: 24px;
+        height: 18px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .hamburger span {
+        display: block;
+        width: 100%;
+        height: 2px;
+        background: var(--text-main);
+        border-radius: 2px;
+        transition: all 0.3s;
+    }
+
+    /* Sidebar Mobile State */
+    .mobile-sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 260px;
+        transform: translateX(-100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 200;
+        background: #0B0F19;
+        /* Use solid bg for sidebar to avoid transparency issues */
+    }
+
+    .layout-container.sidebar-open .mobile-sidebar {
+        transform: translateX(0);
+    }
+
+    /* Backdrop */
+    .backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(2px);
+        z-index: 150;
+        animation: fadeIn 0.2s ease;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    /* Animate Hamburger when open */
+    .sidebar-open .hamburger span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 6px);
+    }
+
+    .sidebar-open .hamburger span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .sidebar-open .hamburger span:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -6px);
+    }
+}
