@@ -41,9 +41,9 @@ const LandingPage = () => {
     {
       id: 2,
       quote: "The real-time analytics have been a game changer. We can finally make data-driven decisions that impact our bottom line immediately.",
-      name: "David Chen",
+      name: "Aditya Thakur",
       role: "Supply Chain Manager",
-      avatar: "/avatar_1.png" // Using same placeholder for now
+      avatar: "/aditya_thakur.jpg"
     },
     {
       id: 3,
