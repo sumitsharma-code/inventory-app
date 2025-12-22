@@ -27,44 +27,46 @@ export default function LowStock() {
       </div>
 
       <div className="glass-card" style={{ padding: 0, overflow: 'hidden' }}>
-        <table className="inventory-table">
-          <thead>
-            <tr>
-              <th>Item ID</th>
-              <th>Name</th>
-              <th>Category</th>
-              <th>Brand</th>
-              <th>Qty vs Threshold</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {items.length === 0 && (
+        <div style={{ overflowX: 'auto' }}>
+          <table className="inventory-table" style={{ minWidth: '500px' }}>
+            <thead>
               <tr>
-                <td colSpan="5" style={{ padding: '3rem', textAlign: 'center', color: '#10B981' }}>
-                  <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🎉</div>
-                  No items are below threshold!
-                </td>
+                <th>Item ID</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Brand</th>
+                <th>Qty vs Threshold</th>
               </tr>
-            )}
+            </thead>
 
-            {items.map((item) => (
-              <tr key={item._id} className="low-stock-row">
-                <td style={{ color: 'white' }}>{item.itemId}</td>
-                <td style={{ color: 'white', fontWeight: '500' }}>{item.name}</td>
-                <td>{item.category}</td>
-                <td>{item.brand}</td>
-                <td>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                    <span style={{ color: '#F87171', fontWeight: 'bold' }}>{item.quantity}</span>
-                    <span style={{ color: '#6B7280', fontSize: '0.8rem' }}>/ {item.threshold}</span>
-                    <FiAlertTriangle style={{ color: '#F87171' }} />
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+            <tbody>
+              {items.length === 0 && (
+                <tr>
+                  <td colSpan="5" style={{ padding: '3rem', textAlign: 'center', color: '#10B981' }}>
+                    <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🎉</div>
+                    No items are below threshold!
+                  </td>
+                </tr>
+              )}
+
+              {items.map((item) => (
+                <tr key={item._id} className="low-stock-row">
+                  <td style={{ color: 'white' }}>{item.itemId}</td>
+                  <td style={{ color: 'white', fontWeight: '500' }}>{item.name}</td>
+                  <td>{item.category}</td>
+                  <td>{item.brand}</td>
+                  <td>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                      <span style={{ color: '#F87171', fontWeight: 'bold' }}>{item.quantity}</span>
+                      <span style={{ color: '#6B7280', fontSize: '0.8rem' }}>/ {item.threshold}</span>
+                      <FiAlertTriangle style={{ color: '#F87171' }} />
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

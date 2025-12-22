@@ -8,44 +8,102 @@ const MainLayout = () => {
     const { user, logout } = useContext(AuthContext);
     const navigate = useNavigate();
 
+    const [isMobile, setIsMobile] = React.useState(window.innerWidth < 768);
+    const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
+
+    React.useEffect(() => {
+        const handleResize = () => {
+            const mobile = window.innerWidth < 768;
+            setIsMobile(mobile);
+            if (!mobile) setIsSidebarOpen(false);
+        };
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+
     const handleLogout = () => {
         logout();
         navigate('/login');
     };
 
     return (
-        <div className="layout-container">
+        <div className={`layout-container ${isMobile ? 'mobile-view' : ''} ${isSidebarOpen ? 'sidebar-open' : ''}`}>
             {/* Global Background Orbs */}
             <div className="glow-orb-layout orb-1"></div>
             <div className="glow-orb-layout orb-2"></div>
 
+            {/* Mobile Header with Hamburger */}
+            {isMobile && (
+                <div className="mobile-header">
+                    <button className="menu-btn" onClick={toggleSidebar}>
+                        <div className="hamburger">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </button>
+                    <div className="brand-mobile">Quantara</div>
+                </div>
+            )}
+
+            {/* Backdrop for Mobile */}
+            {isMobile && isSidebarOpen && (
+                <div className="backdrop" onClick={() => setIsSidebarOpen(false)}></div>
+            )}
+
             {/* Sidebar Navigation */}
-            <aside className="sidebar">
+            <aside className={`sidebar ${isMobile ? 'mobile-sidebar' : ''}`}>
                 <div className="brand">Quantara</div>
 
                 <nav className="nav-menu">
-                    <NavLink to="/dashboard" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+                    <NavLink
+                        to="/dashboard"
+                        className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
+                        onClick={() => isMobile && setIsSidebarOpen(false)}
+                    >
                         <FiHome className="nav-icon" /> Dashboard
                     </NavLink>
 
-                    <NavLink to="/inventory" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+                    <NavLink
+                        to="/inventory"
+                        className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
+                        onClick={() => isMobile && setIsSidebarOpen(false)}
+                    >
                         <FiBox className="nav-icon" /> Inventory
                     </NavLink>
 
-                    <NavLink to="/sales/new" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+                    <NavLink
+                        to="/sales/new"
+                        className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
+                        onClick={() => isMobile && setIsSidebarOpen(false)}
+                    >
                         <FiShoppingCart className="nav-icon" /> Sales
                     </NavLink>
 
-                    <NavLink to="/sales/history" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+                    <NavLink
+                        to="/sales/history"
+                        className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
+                        onClick={() => isMobile && setIsSidebarOpen(false)}
+                    >
                         <FiActivity className="nav-icon" /> History
                     </NavLink>
 
-                    <NavLink to="/low-stock" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+                    <NavLink
+                        to="/low-stock"
+                        className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
+                        onClick={() => isMobile && setIsSidebarOpen(false)}
+                    >
                         <FiAlertCircle className="nav-icon" /> Low Stock
                     </NavLink>
 
                     {user && user.role === 'admin' && (
-                        <NavLink to="/users" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+                        <NavLink
+                            to="/users"
+                            className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
+                            onClick={() => isMobile && setIsSidebarOpen(false)}
+                        >
                             <FiUsers className="nav-icon" /> Users
                         </NavLink>
                     )}

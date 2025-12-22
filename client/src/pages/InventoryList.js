@@ -77,54 +77,56 @@ const InventoryList = () => {
       </div>
 
       <div className="glass-card" style={{ padding: 0, overflow: 'hidden' }}>
-        <table className="inventory-table">
-          <thead>
-            <tr>
-              <th>SKU</th>
-              <th>Name</th>
-              <th>Category</th>
-              <th>Brand</th>
-              <th>Stock</th>
-              <th>Price</th>
-              <th style={{ textAlign: 'right' }}>Actions</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {items.map((item) => (
-              <tr
-                key={item._id}
-                className={item.quantity < item.threshold ? 'low-stock-row' : ''}
-              >
-                <td>{item.itemId}</td>
-                <td style={{ fontWeight: '500', color: 'white' }}>{item.name}</td>
-                <td>{item.category}</td>
-                <td>{item.brand}</td>
-                <td>
-                  <span style={{
-                    padding: '0.25rem 0.75rem',
-                    borderRadius: '1rem',
-                    fontSize: '0.85rem',
-                    background: item.quantity < item.threshold ? 'rgba(239, 68, 68, 0.2)' : 'rgba(16, 185, 129, 0.2)',
-                    color: item.quantity < item.threshold ? '#FCA5A5' : '#6EE7B7'
-                  }}>
-                    {item.quantity}
-                  </span>
-                </td>
-                <td>₹{item.price}</td>
-                <td style={{ textAlign: 'right' }}>
-                  <button
-                    onClick={() => navigate(`/inventory/edit/${item._id}`)}
-                    className="icon-btn-edit"
-                    title="Edit Item"
-                  >
-                    <FiEdit />
-                  </button>
-                </td>
+        <div style={{ overflowX: 'auto' }}>
+          <table className="inventory-table" style={{ minWidth: '800px' }}>
+            <thead>
+              <tr>
+                <th>SKU</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Brand</th>
+                <th>Stock</th>
+                <th>Price</th>
+                <th style={{ textAlign: 'right' }}>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+
+            <tbody>
+              {items.map((item) => (
+                <tr
+                  key={item._id}
+                  className={item.quantity < item.threshold ? 'low-stock-row' : ''}
+                >
+                  <td>{item.itemId}</td>
+                  <td style={{ fontWeight: '500', color: 'white' }}>{item.name}</td>
+                  <td>{item.category}</td>
+                  <td>{item.brand}</td>
+                  <td>
+                    <span style={{
+                      padding: '0.25rem 0.75rem',
+                      borderRadius: '1rem',
+                      fontSize: '0.85rem',
+                      background: item.quantity < item.threshold ? 'rgba(239, 68, 68, 0.2)' : 'rgba(16, 185, 129, 0.2)',
+                      color: item.quantity < item.threshold ? '#FCA5A5' : '#6EE7B7'
+                    }}>
+                      {item.quantity}
+                    </span>
+                  </td>
+                  <td>₹{item.price}</td>
+                  <td style={{ textAlign: 'right' }}>
+                    <button
+                      onClick={() => navigate(`/inventory/edit/${item._id}`)}
+                      className="icon-btn-edit"
+                      title="Edit Item"
+                    >
+                      <FiEdit />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
         {items.length === 0 && (
           <div style={{ padding: '2rem', textAlign: 'center', color: '#9CA3AF' }}>
             No items found.
