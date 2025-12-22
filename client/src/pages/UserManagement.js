@@ -2,11 +2,12 @@ import React, { useEffect, useState, useContext } from 'react';
 import api from '../api/api';
 import { AuthContext } from '../contexts/AuthContext';
 import { FiUser, FiLock, FiShield, FiPlus, FiTrash2 } from 'react-icons/fi';
+import './UserManagement.css';
 
 export default function UserManagement() {
   const { user } = useContext(AuthContext);
   const [users, setUsers] = useState([]);
-  const [form, setForm] = useState({ username: '', password: '', role: 'creator', displayName: '' });
+  const [form, setForm] = useState({ username: '', password: '', role: 'staff', displayName: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -36,13 +37,13 @@ export default function UserManagement() {
       return;
     }
     try {
-      await api.post('/auth/register', {
+      await api.post('/users', {
         username: form.username,
         password: form.password,
         role: form.role,
         displayName: form.displayName
       });
-      setForm({ username: '', password: '', role: 'creator', displayName: '' });
+      setForm({ username: '', password: '', role: 'staff', displayName: '' });
       fetchUsers();
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to create user');
@@ -70,10 +71,10 @@ export default function UserManagement() {
         <p>Administer access and roles for the application.</p>
       </div>
 
-      <div className="glass-card" style={{ maxWidth: '800px', margin: '0 auto 3rem auto' }}>
-        <h3 style={{ marginTop: 0, color: 'white', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '1rem' }}>Create New User</h3>
-        <form onSubmit={handleCreate} style={{ display: 'grid', gap: '1rem', marginTop: '1.5rem' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+      <div className="glass-card user-management-container">
+        <h3 className="section-title">Create New User</h3>
+        <form onSubmit={handleCreate} className="user-form">
+          <div className="form-row">
             <div className="form-group">
               <label>Username</label>
               <div className="input-wrapper">
@@ -100,7 +101,7 @@ export default function UserManagement() {
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <div className="form-row">
             <div className="form-group">
               <label>Password</label>
               <div className="input-wrapper">
@@ -124,24 +125,24 @@ export default function UserManagement() {
                   onChange={e => setForm({ ...form, role: e.target.value })}
                   style={{ appearance: 'none' }}
                 >
-                  <option value="creator" style={{ color: 'black' }}>Creator</option>
+                  <option value="staff" style={{ color: 'black' }}>Staff</option>
                   <option value="admin" style={{ color: 'black' }}>Admin</option>
                 </select>
               </div>
             </div>
           </div>
 
-          <button type="submit" className="btn-primary" style={{ marginTop: '0.5rem' }}>
+          <button type="submit" className="btn-primary">
             <FiPlus style={{ marginRight: '0.5rem' }} /> Create User
           </button>
         </form>
         {error && <div className="error-message">{error}</div>}
       </div>
 
-      <div className="glass-card" style={{ padding: 0, overflow: 'hidden' }}>
-        <h3 style={{ padding: '1.5rem', margin: 0, color: 'white', background: 'rgba(255,255,255,0.02)' }}>Existing Users</h3>
-        {loading ? <p style={{ padding: '2rem', textAlign: 'center' }}>Loading users...</p> : (
-          <div style={{ overflowX: 'auto' }}>
+      <div className="glass-card existing-users-card">
+        <h3 className="existing-users-header">Existing Users</h3>
+        {loading ? <p style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>Loading users...</p> : (
+          <div className="table-responsive">
             <table className="inventory-table" style={{ minWidth: '600px' }}>
               <thead>
                 <tr><th>Username</th><th>Display Name</th><th>Role</th><th style={{ textAlign: 'right' }}>Actions</th></tr>
@@ -152,13 +153,7 @@ export default function UserManagement() {
                     <td style={{ color: 'white', fontWeight: '500' }}>{u.username}</td>
                     <td>{u.displayName || '—'}</td>
                     <td>
-                      <span style={{
-                        padding: '0.25rem 0.75rem',
-                        borderRadius: '1rem',
-                        fontSize: '0.85rem',
-                        background: u.role === 'admin' ? 'rgba(139, 92, 246, 0.2)' : 'rgba(59, 130, 246, 0.2)',
-                        color: u.role === 'admin' ? '#C4B5FD' : '#93C5FD'
-                      }}>
+                      <span className={`role-badge ${u.role}`}>
                         {u.role}
                       </span>
                     </td>
