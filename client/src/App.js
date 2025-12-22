@@ -13,6 +13,9 @@ import UserManagement from './pages/UserManagement';
 import PrivateRoute from './components/PrivateRoute';
 
 import LandingPage from './components/LandingPage';
+import CareerPage from './pages/CareerPage';
+import AboutPage from './pages/AboutPage';
+import PricingPage from './pages/PricingPage';
 
 function App() {
   return (
@@ -21,6 +24,9 @@ function App() {
 
         {/* Public Routes */}
         <Route path="/" element={<LandingPage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/career" element={<CareerPage />} />
+        <Route path="/pricing" element={<PricingPage />} />
         <Route path="/login" element={<LoginPage />} />
 
         {/* Protected Routes */}

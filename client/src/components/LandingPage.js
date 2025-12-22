@@ -4,18 +4,17 @@ import ScrollReveal from './ScrollReveal';
 import './LandingPage.css';
 
 const LandingPage = () => {
-  const [currentTestimonial, setCurrentTestimonial] = useState(0);
+
   const [activeAcc, setActiveAcc] = useState(0);
+  const [email, setEmail] = useState('');
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const faqData = [
     {
       question: "What is Quantara, and how does it work?",
-      answer: "Quantara is an AI-powered inventory management platform designed to simplify stock tracking. It uses artificial intelligence to predict demand, automate reordering, and provide real-time analytics across all your warehouses."
+      answer: "Quantara is a comprehensive inventory management platform designed to simplify stock tracking. It uses smart algorithms to predict demand, automate reordering, and provide real-time analytics across all your warehouses."
     },
-    {
-      question: "Can I integrate Quantara with my existing store?",
-      answer: "Yes! Quantara seamlessly integrates with major e-commerce platforms like Shopify, WooCommerce, and Amazon, as well as custom ERP systems via our robust API."
-    },
+
     {
       question: "Is my data secure with Quantara?",
       answer: "Absolutely. We use bank-grade AES-256 encryption and strictly adhere to GDPR and CCPA standards to ensure your business data remains private and secure."
@@ -30,45 +29,21 @@ const LandingPage = () => {
     setActiveAcc(activeAcc === index ? -1 : index);
   };
 
-  const testimonials = [
-    {
-      id: 1,
-      quote: "Our business experienced a significant transformation thanks to this platform's inventory tracking. We reduced stockouts by 40% in just two months.",
-      name: "Amanda Holly",
-      role: "Operations Director",
-      avatar: "/avatar_1.png"
-    },
-    {
-      id: 2,
-      quote: "The real-time analytics have been a game changer. We can finally make data-driven decisions that impact our bottom line immediately.",
-      name: "Aditya Thakur",
-      role: "Supply Chain Manager",
-      avatar: "/aditya_thakur.jpg"
-    },
-    {
-      id: 3,
-      quote: "Security was our main concern, and Quantara nailed it. The role-based access control gave us peace of mind from day one.",
-      name: "Sarah Miller",
-      role: "CTO, TechFlow",
-      avatar: "/avatar_1.png"
+  const testimonial = {
+    quote: "The real-time analytics have been a game changer. We can finally make data-driven decisions that impact our bottom line immediately.",
+    name: "Aditya Thakur",
+    role: "Supply Chain Manager"
+  };
+
+  const handleContactSubmit = (e) => {
+    e.preventDefault();
+    if (email.trim()) {
+      setIsSubmitted(true);
+      setEmail('');
     }
-  ];
-
-  const nextTestimonial = () => {
-    setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
   };
 
-  const prevTestimonial = () => {
-    setCurrentTestimonial((prev) => (prev - 1 + testimonials.length) % testimonials.length);
-  };
 
-  // Auto-play for testimonials
-  useEffect(() => {
-    const interval = setInterval(() => {
-      nextTestimonial();
-    }, 5000); // Change every 5 seconds
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <div className="landing-page">
@@ -113,7 +88,7 @@ const LandingPage = () => {
             <div className="mock-stat-grid">
               <div className="mock-card">
                 <h3>Total Revenue</h3>
-                <div className="value">$8,245,500</div>
+                <div className="value">₹8,245,500</div>
                 <div className="trend">↑ 24.5% YTD</div>
               </div>
               <div className="mock-card">
@@ -312,24 +287,14 @@ const LandingPage = () => {
 
           <div className="testimonial-slider">
             <div className="testimonial-card">
-              <p className="testimonial-quote">"{testimonials[currentTestimonial].quote}"</p>
+              <p className="testimonial-quote">"{testimonial.quote}"</p>
 
               <div className="testimonial-profile">
-                <img
-                  src={testimonials[currentTestimonial].avatar}
-                  alt={testimonials[currentTestimonial].name}
-                  className="testimonial-avatar"
-                />
                 <div className="testimonial-info">
-                  <h4>{testimonials[currentTestimonial].name}</h4>
-                  <span>{testimonials[currentTestimonial].role}</span>
+                  <h4>{testimonial.name}</h4>
+                  <span>{testimonial.role}</span>
                 </div>
               </div>
-            </div>
-
-            <div className="slider-controls">
-              <button onClick={prevTestimonial} className="nav-arrow" aria-label="Previous">←</button>
-              <button onClick={nextTestimonial} className="nav-arrow" aria-label="Next">→</button>
             </div>
           </div>
         </ScrollReveal>
@@ -382,7 +347,7 @@ const LandingPage = () => {
 
 
       {/* CTA Section */}
-      <section className="cta-section">
+      <section className="cta-section" id="contact">
         <ScrollReveal>
           <div className="cta-container">
             <div className="cta-content">
@@ -395,10 +360,24 @@ const LandingPage = () => {
               </p>
             </div>
             <div className="cta-form-container">
-              <form className="cta-form" onSubmit={(e) => e.preventDefault()}>
-                <input type="email" placeholder="Enter your email" className="cta-input" />
-                <button type="submit" className="cta-submit-btn">Contact Us</button>
-              </form>
+              {isSubmitted ? (
+                <div className="success-message" style={{ background: 'rgba(16, 185, 129, 0.2)', border: '1px solid #10B981', padding: '1.5rem', borderRadius: '1rem', color: 'white', textAlign: 'center' }}>
+                  <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.25rem' }}>Message Sent!</h3>
+                  <p style={{ margin: 0, color: '#D1FAE5' }}>Thanks for reaching out. We'll be in touch shortly.</p>
+                </div>
+              ) : (
+                <form className="cta-form" onSubmit={handleContactSubmit}>
+                  <input
+                    type="email"
+                    placeholder="Enter your email"
+                    className="cta-input"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                  <button type="submit" className="cta-submit-btn">Contact Us</button>
+                </form>
+              )}
             </div>
           </div>
           {/* Background decorative shapes for CTA */}
@@ -419,32 +398,28 @@ const LandingPage = () => {
 
           <div className="footer-link-col">
             <h4>Menu</h4>
-            <Link to="/">Home</Link>
-            <Link to="/features">Features</Link>
-            <Link to="/usecases">UseCases</Link>
+            <a href="#" onClick={(e) => {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}>Home</a>
             <Link to="/pricing">Pricing</Link>
-            <Link to="/changelog">Changelog</Link>
           </div>
 
           <div className="footer-link-col">
             <h4>Company</h4>
             <Link to="/about">About Us</Link>
-            <Link to="/contact">Contact Us</Link>
+            <a href="/#contact">Contact Us</a>
           </div>
 
           <div className="footer-link-col">
             <h4>Other Pages</h4>
-            <Link to="/customer">Customer</Link>
             <Link to="/career">Career</Link>
-            <Link to="/support">Support Center</Link>
+            <a href="/#contact">Support Center</a>
           </div>
 
           <div className="footer-link-col">
             <h4>Social Media</h4>
-            <a href="#linkedin">LinkedIn</a>
-            <a href="#instagram">Instagram</a>
-            <a href="#x">X</a>
-            <a href="#github">Github</a>
+            <a href="https://github.com/sumitsharma-code/inventory-app" target="_blank" rel="noopener noreferrer">Github</a>
           </div>
         </div>
 

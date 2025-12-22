@@ -616,6 +616,7 @@ body {
 .testimonial-profile {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 1rem;
 }
 
@@ -628,7 +629,7 @@ body {
 }
 
 .testimonial-info {
-  text-align: left;
+  text-align: center;
 }
 
 .testimonial-info h4 {
